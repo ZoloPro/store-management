@@ -28,6 +28,9 @@ module.exports = (sequelize, DataTypes) => {
       attributes: {
         exclude: ['password'],
       }
+    },
+    scopes: {
+      auth:{}
     }
   });
   return StoreOwner;

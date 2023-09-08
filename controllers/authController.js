@@ -32,13 +32,13 @@ const storeOwnerLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        let storeOwner = await StoreOwner.findAll({
+        const storeOwner = await db.StoreOwner.scope('auth').findOne({
             where: {
                 email,
             }
         });
 
-        if (storeOwner.length === 0) {
+        if (!storeOwner) {
             return res.status(400).json({
                 success: false,
                 message: 'Email not found',
@@ -46,7 +46,7 @@ const storeOwnerLogin = async (req, res) => {
             })
         }
 
-        storeOwner = storeOwner[0];
+        console.log(storeOwner);
 
         const isPasswordCorrect = await bcrypt.compareSync(password, storeOwner.password);
         if (!isPasswordCorrect) {
